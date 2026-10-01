@@ -18,8 +18,13 @@ const authentication = async (req, res, next) => {
       req.role = decodedToken.rol;
       next();
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal server Error" });
+  }
+};
 
-    const authorization = (...allowedRoles) => {
+ const authorization = (...allowedRoles) => {
       return async (req, res, next) => {
         try {
           if (!allowedRoles.includes(req.role)) {
@@ -32,9 +37,4 @@ const authentication = async (req, res, next) => {
         }
       };
     };
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Internal server Error" });
-  }
-};
 module.exports = {authentication,authorization};

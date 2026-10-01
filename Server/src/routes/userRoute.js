@@ -7,20 +7,30 @@ const {
   updateProfile,
   deleteProfile,
   getAllUsers,
-  deleteAnyUser,
+  delteAnyProfile,
 } = require("../controllers/userController");
 
 const { authentication, authorization } = require("../middlewares/auth");
-const upload = require("multer");
+//const upload = require("../config/multer");
+//upload.single("profileImage")
 
-router.post("/signup", upload.single("profileImage"), signup);
+router.post("/signup", signup);
 router.post("/login", login);
-router.get("/my-profile", authentication, getAllUsers);
-router.put("/update",authentication,upload.single("profileImage"),updateProfile);
-router.delete("/delete",authentication,deleteProfile);
+router.get("/my-profile", authentication, getMyProfile);
+router.put(
+  "/update",
+  authentication,
+  updateProfile,
+);
+router.delete("/delete", authentication, deleteProfile);
 
 //Admin Routes
-router.get("/all-users",authentication,authorization("admin"),getAllUsers);
-router.delete("/delete-user/:id",authentication,authorization("admin"),deleteAnyUser);
+router.get("/all-users", authentication, authorization("admin"), getAllUsers);
+router.delete(
+  "/delete-user/:id",
+  authentication,
+  authorization("admin"),
+  delteAnyProfile,
+);
 
 module.exports = router;
